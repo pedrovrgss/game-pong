@@ -42,6 +42,9 @@ tempo_espera = 1.5  # 2 segundos
 tempo_inicial = time.time()
 esperando = True
 
+ia_ativa = False
+tempo_ia = 1.0  # Atraso de 1 segundo
+tempo_ia_inicial = time.time()
 while True:
     # Define a cor de fundo como roxo espacial (26, 4, 60)
     janela.set_background_color((26, 4, 60))
@@ -58,14 +61,17 @@ while True:
     bolinha.y += vel_y * janela.delta_time()
 
     # Restringe o movimento dos Pads
-    if teclado.key_pressed("W") and padE.y > 0:  # Move o Pad esquerdo para cima
-        padE.y -= velP * janela.delta_time()
-    if teclado.key_pressed("S") and padE.y + padE.height < janela.height:  # Move o Pad esquerdo para baixo
-        padE.y += velP * janela.delta_time()
     if teclado.key_pressed("UP") and padD.y > 0:  # Move o Pad direito para cima
         padD.y -= velP * janela.delta_time()
     if teclado.key_pressed("DOWN") and padD.y + padD.height < janela.height:  # Move o Pad direito para baixo
         padD.y += velP * janela.delta_time()
+
+    if bolinha.y > padE.y + padE.height / 2 and padE.y + padE.height < janela.height:  # Move o Pad esquerdo para baixo
+        padE.y += velP * janela.delta_time()/1.4
+    if bolinha.y < padE.y + padE.height / 2 and padE.y > 0:  # Move o Pad esquerdo para cima
+        padE.y -= velP * janela.delta_time()/1.4
+
+
 
     # Verifica se a bolinha saiu da tela e depois joga ela no meio
     if (bolinha.x + bolinha.width >= janela.width):
